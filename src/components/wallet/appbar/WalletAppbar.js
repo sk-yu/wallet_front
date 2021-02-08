@@ -31,25 +31,29 @@ export default function WalletAppbar(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
-    const handleMenu = (event) => {
+    const onClickMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };
-    const handleClose = () => {
+    const onClose = () => {
         setAnchorEl(null);
     };
-    const onSignOut = () => {
+    const onClickSignOut = () => {
         setAnchorEl(null);
         console.log('sign out');
         // history.push('/signin');
         props.history.push('/signin');
     }
 
-    const handleAddressClick = (address) => {
+    const onClickAddress = (address) => {
         return () => {
-            console.log('handleAddressClick() : ' + address);
+            // console.log('handleAddressClick() : ' + address);
             setAnchorEl(null);
             dispatch(addressSetAction(address));
         } 
+    }
+
+    const handleAddAddress = () => {
+        
     }
 
     return (
@@ -65,7 +69,7 @@ export default function WalletAppbar(props) {
                     aria-label="account of current user"
                     aria-controls="menu-appbar"
                     aria-haspopup="true"
-                    onClick={handleMenu}
+                    onClick={onClickMenu}
                     color="inherit">
                 <AccountCircle />
                 </IconButton>
@@ -82,12 +86,12 @@ export default function WalletAppbar(props) {
                     horizontal: 'right',
                     }}
                     open={open}
-                    onClose={handleClose}
+                    onClose={onClose}
                 >
                     <Paper>
                         {stateAdresses.length > 0 && stateAdresses.map(address => {
                             return (
-                                <MenuItem key={address} onClick={handleAddressClick(address)}>
+                                <MenuItem key={address} onClick={onClickAddress(address)}>
                                     <Typography variant="inherit" noWrap>
                                         {address.substr(0,8)}....{address.substr(address.length-5, 5)}
                                     </Typography>
@@ -95,9 +99,9 @@ export default function WalletAppbar(props) {
                             )})
                         }
                         {stateAdresses.length > 0 && <Divider />}
-                        <MenuItem >주소 추가하기</MenuItem>
+                        <MenuItem onClick={handleAddAddress}>주소 추가하기</MenuItem>
                         <Divider />
-                        <MenuItem onClick={onSignOut}>Sign Out</MenuItem>
+                        <MenuItem onClick={onClickSignOut}>Sign Out</MenuItem>
                     </Paper>
 
                 </Popover>

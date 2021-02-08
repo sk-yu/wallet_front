@@ -35,7 +35,6 @@ export default function wallet(state = initialState, action) {
     case GET_WALLET_INFO:
         return {
             ...state,
-            // assets:[...state.assets, payload]
             assets:payload
         }
 

@@ -26,6 +26,7 @@ export default function History(props) {
 	const { tablValue, index } = props;
 	const classes = useStyles();
 	const stateToken = useSelector((state) => state.auth.token);
+	const stateAssets  = useSelector((state) => state.wallet.assets);
 	const [historys, setHistorys] = useState([]);
 
 	const refreshHistorys = () => {
@@ -47,7 +48,7 @@ export default function History(props) {
 
 	useEffect(() => {
 		refreshHistorys();
-	}, []);
+	}, [stateAssets]);
 
     return (
 		<div

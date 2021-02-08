@@ -1,15 +1,17 @@
 import React, {useState} from 'react';
-import { useSelector } from "react-redux";
-import Typography from '@material-ui/core/Typography';
+import { useSelector, useDispatch } from "react-redux";
+// import Typography from '@material-ui/core/Typography';
 // import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 
-import Paper from '@material-ui/core/Paper';
+// import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 
 import WalletService from '../../../services/WalletService';
+import {walletInfoAction} from '../../../actions/WalletAction';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -34,20 +36,19 @@ const useStyles = makeStyles((theme) => ({
 export default function Transfer(props) {
 	const { tablValue, index } = props;
 	const classes = useStyles();
-	const stateToken = useSelector((state) => state.auth.token);
+	// const stateToken = useSelector((state) => state.auth.token);
+	const stateAssets = useSelector((state) => state.wallet.assets);
+	const stateSelected = useSelector((state) => state.wallet.selectAddress);
 
-	const [address, setAddress] = useState("");
-	const [amount, setAmount] = useState("");
-	const [passphase, setPassphase] = useState("");
-	
+	const [address, setAddress] = useState('');
+	const [amount, setAmount] = useState('');
+	const [passphase, setPassphase] = useState('');
+	const [asset, setAsset] = useState('ETH');
+
+	const dispatch = useDispatch();
 	
 	const onChangeAddress = (e) => {
 		const address = e.target.value;
-		// console.log(e.target)
-		// console.log(e.taget.value);
-		// const value = e.taget.value;
-		
-		
 		setAddress(address);
 	}
 
@@ -61,8 +62,16 @@ export default function Transfer(props) {
 		setPassphase(tmp);
 	}
 
+	const onChangeAsset = (e) => {
+		const tmp = e.target.value;
+		setAsset(tmp);
+	}
+
 	const onSendTransfer = (e) => {
 		e.preventDefault();
+		console.log('onSendTransfer');
+		// dispatch(walletInfoAction(stateSelected));
+		// return;
 
 		if(address === '') {
 			alert('주소를 입력해주세요');
@@ -74,26 +83,62 @@ export default function Transfer(props) {
 			alert('2차 비밀번호를 입력해주세요');
 		}
 		else {
-			console.log('call getBalance');
-			WalletService.transfer(stateToken, {
-				'to':address,
-				'amount':amount,
-				'passphase':passphase
-			})
-			.then( res => {
-				console.log(res);
-				if(res.result === true) {
-					alert('전송완료');
+			if(asset === 'ETH') {
+				WalletService.transfer( {
+					'from':stateSelected,
+					'to':address,
+					'amount':amount,
+					'passphase':passphase
+				})
+				.then( res => {
+					console.log(res);
+					if(res.result === true) {
+						dispatch(walletInfoAction(stateSelected));
+						alert('전송완료');
+						//todo : txhistory 다시 가져오기
+						
+					}
+					else {
+						alert('전송실패');
+					}
+					
+				})
+				.catch(err => {
+					console.log(err);
+					alert('전송오류');
+				});
+			}
+			else {
+				const tokenAsset = stateAssets.find(stateasset=> stateasset.symbol===asset );
+				if(tokenAsset === undefined) {
+					alert('not found asset');
+					return;
 				}
-				else {
-					alert('전송실패');
-				}
-				
-			})
-			.catch(err => {
-				console.log(err);
-				alert('전송오류');
-			});
+
+				WalletService.transferToken( {
+					'from':stateSelected,
+					'to':address,
+					'tokenaddress':tokenAsset.token,
+					'amount':amount,
+					'passphase':passphase
+				})
+				.then( res => {
+					console.log(res);
+					if(res.result === true) {
+						dispatch(walletInfoAction(stateSelected));
+						alert('전송완료');
+					}
+					else {
+						alert('전송실패');
+					}
+					
+				})
+				.catch(err => {
+					console.log(err);
+					alert('전송오류');
+				});
+			}
+
 		}
 	}
 
@@ -110,6 +155,13 @@ export default function Transfer(props) {
 		>
 		{tablValue === index && (
 			<div className={classes.menu}>
+			<TextField className={classes.text} fullWidth variant="outlined" label="자산" name="asset" select value={asset} onChange={onChangeAsset} >
+				{stateAssets!==null&&stateAssets.map(asset => {
+					return (
+						<MenuItem key={asset.symbol} value={asset.symbol}>{asset.symbol}</MenuItem>
+					)
+				})}
+			</TextField>
 			<TextField className={classes.text} fullWidth variant="outlined" label="주소" type="text" name="address" value={address} onChange={onChangeAddress}/>
 			<TextField className={classes.text} fullWidth variant="outlined" label="수량" type="text" name="amount" value={amount} onChange={onChangeAmount} />
 			<TextField className={classes.text} fullWidth variant="outlined" label="2차비밀번호" type="text" name="passphase" value={passphase} onChange={onChangePassPhase} />

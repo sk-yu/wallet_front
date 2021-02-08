@@ -9,6 +9,7 @@ import {addressInfoAction} from '../../actions/WalletAction';
 
 export default function WalletAssetGrid() {
     const stateSelected  = useSelector((state) => state.wallet.selectAddress);
+    const stateAssets  = useSelector((state) => state.wallet.assets);
     const [mount, setMount] = useState(false);
     const [address, setAddress] = useState('');
     const [amount, setAmount] = useState(0);
@@ -47,6 +48,19 @@ export default function WalletAssetGrid() {
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ stateSelected]);
+
+    useEffect(() => {
+        // console.log(`WalletAsset component useEffect called`);
+        if(stateAssets !== null) {
+            const asset = stateAssets.find(asset => asset.symbol === 'ETH');
+        
+            if(asset !== undefined) {
+                // console.log(asset);
+                setAmount(asset.amount);
+            }
+        }
+
+    }, [stateAssets])
 
     return (
         <div >

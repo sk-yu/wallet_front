@@ -21,7 +21,8 @@ export default function Asset(props) {
 	const { tablValue, index } = props;
 	const classes = useStyles();
 	const stateSelected = useSelector((state) => state.wallet.selectAddress);
-	const [assets, setAssets] = useState([]);
+	// const [assets, setAssets] = useState([]);
+	const assets = useSelector((state) => state.wallet.assets);
 
 	const dispatch = useDispatch();
 
@@ -30,7 +31,7 @@ export default function Asset(props) {
 	const getWalletInfo = () => {
 		
 		dispatch(walletInfoAction(stateSelected)).then((res) => {
-			setAssets(res.data);
+			// setAssets(res.data);
 		});
 	}
 

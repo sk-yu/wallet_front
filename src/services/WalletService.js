@@ -56,9 +56,25 @@ const balance = (address) => {
 }
 
 const transfer = (reqBody) => {
-    console.log('transfer token : '+ localStorage.authorization)
+    // console.log('transfer eth : '+ localStorage.authorization)
     return axios
     .post(`/api/v1/eth/transfer`, reqBody, {
+        headers:{'x-access-token':localStorage.authorization}
+    })
+    .then(res => {
+        // console.log(res.data);
+        return res.data;
+    })
+    .catch(error => {
+        console.error(error);
+        return error;
+    }) 
+}
+
+const transferToken = (reqBody) => {
+    // console.log('transfer token : '+ localStorage.authorization)
+    return axios
+    .post(`/api/v1/token/transfer`, reqBody, {
         headers:{'x-access-token':localStorage.authorization}
     })
     .then(res => {
@@ -91,5 +107,5 @@ const getHistorys = () => {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-    addressInfo, walletInfo, balance, transfer, getHistorys
+    addressInfo, walletInfo, balance, transfer, transferToken, getHistorys
 }
