@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -14,14 +14,12 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {loginAction} from '../../actions/AuthAction';
-// import {addressInfoAction} from '../../actions/WalletAction';
-// import {connect} from 'react-redux';
 
 function Copyright() {
     return   (
         <Typography variant="body2" color="textSecondary" align="center">
         {'Copyright © '}
-        <Link color="inherit" href="https://material-ui.com/">
+        <Link color="inherit" href="https://github.com/sk-yu/wallet_front">
             Your Website
         </Link>{' '}
         {new Date().getFullYear()}
@@ -58,23 +56,6 @@ const SignIn = (props) => {
 
     const dispatch = useDispatch();
 
-    // const jwt = () =>
-    // {
-    //     if(props.isLoggedIn){
-    //         dispatch(jwtCheck(localStorage.authorization))
-    //         .then(() =>{
-    //             props.history.push("/employee")
-    //         })
-    //         .catch(()=>{
-    //             localStorage.clear();
-    //         })        
-    //     }
-    // }
-
-    // useEffect(()=>{
-    //     jwt();
-    // })
-
     const onChangeId = (e) => {
       const id = e.target.value;
       setId(id);
@@ -88,26 +69,17 @@ const SignIn = (props) => {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        console.log(id, password);
-        // // alert(password);
+        // console.log(id, password);
+        
         dispatch(loginAction(id, password))
         .then((data) => {
             console.log('login ok');
             
             props.history.push('/wallet');
-            
-            // dispatch(addressInfoAction(token))
-            // .then( () => {
-            //     props.history.push('/wallet');
-            // });
-            // .catch( () => {
-            //     console.log('get address failed')
-            //     alert('get address failed');
-            // })
         })
         .catch((error) => {
             console.log('login failed')
-            alert('login failed');
+            
             alert(error);
         })
     }
@@ -164,11 +136,6 @@ const SignIn = (props) => {
                 Sign In
             </Button>
             <Grid container>
-                {/* <Grid item xs>
-                <Link href="#" variant="body2">
-                    Forgot password?
-                </Link>
-                </Grid> */}
                 <Grid item>
                 <Link href="/signup" variant="body2">
                     {"Don't have an account? Sign Up"}
@@ -183,11 +150,5 @@ const SignIn = (props) => {
         </Container>
     );
 }
-// const mapStateToProps = (state) => ({
-//     isLoggedIn:state.auth.isLoggedIn,
-//     user:state,
-// })
-// export default connect(
-//     mapStateToProps,
-// )(SignIn);
+
 export default SignIn;

@@ -13,6 +13,8 @@ import Popover from '@material-ui/core/Popover';
 import Paper from '@material-ui/core/Paper';
 
 import {addressSetAction} from '../../../actions/WalletAction';
+import AddToken from './AppbarAddToken';
+import AddAddress from './AppbarAddNewAddress';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -29,6 +31,7 @@ export default function WalletAppbar(props) {
     const dispatch = useDispatch();
 
     const [anchorEl, setAnchorEl] = useState(null);
+    // const [openAddToken, setOpenAddToken] = useState(false);
     const open = Boolean(anchorEl);
 
     const onClickMenu = (event) => {
@@ -50,10 +53,6 @@ export default function WalletAppbar(props) {
             setAnchorEl(null);
             dispatch(addressSetAction(address));
         } 
-    }
-
-    const handleAddAddress = () => {
-        
     }
 
     return (
@@ -99,7 +98,8 @@ export default function WalletAppbar(props) {
                             )})
                         }
                         {stateAdresses.length > 0 && <Divider />}
-                        <MenuItem onClick={handleAddAddress}>주소 추가하기</MenuItem>
+                        <AddAddress handleMenuClose={onClose}></AddAddress>
+                        <AddToken handleMenuClose={onClose}></AddToken>
                         <Divider />
                         <MenuItem onClick={onClickSignOut}>Sign Out</MenuItem>
                     </Paper>

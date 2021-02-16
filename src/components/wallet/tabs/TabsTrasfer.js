@@ -1,10 +1,6 @@
 import React, {useState} from 'react';
 import { useSelector, useDispatch } from "react-redux";
-// import Typography from '@material-ui/core/Typography';
-// import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
-
-// import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -164,7 +160,7 @@ export default function Transfer(props) {
 			</TextField>
 			<TextField className={classes.text} fullWidth variant="outlined" label="주소" type="text" name="address" value={address} onChange={onChangeAddress}/>
 			<TextField className={classes.text} fullWidth variant="outlined" label="수량" type="text" name="amount" value={amount} onChange={onChangeAmount} />
-			<TextField className={classes.text} fullWidth variant="outlined" label="2차비밀번호" type="text" name="passphase" value={passphase} onChange={onChangePassPhase} />
+			<TextField className={classes.text} fullWidth variant="outlined" label="2차비밀번호" type="password" name="passphase" value={passphase} onChange={onChangePassPhase} />
 			<Button className={classes.text} fullWidth variant="contained" color="primary" onClick={onSendTransfer}>전송하기</Button>
 			</div>
 		)}

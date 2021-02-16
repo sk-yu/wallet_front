@@ -18,11 +18,7 @@ const useStyles = makeStyles((theme) => ({
 		// backgroundColor: theme.palette.background.paper,
 		// background: "blue"
 		// backgroundColor: "#8888ff"
-		// backgroundColor: "#8888ff"
 		// backgroundColor: "primary.main",
-		// backgroundColor: "primary.main",
-		// backgroundColor: "primary.main",
-		// backgroundColor: "primary.main"
 	}
 }));
 
@@ -38,7 +34,7 @@ export default function WalletTabs() {
 	// <Paper className={classes.root}></Paper>
 	// <AppBar position="static">
 	return (
-		<Paper className={classes.root}>
+		<Paper className={classes.root} elevation={4}>
 			<Tabs className={classes.tabs}
 				value={tablValue}
 				onChange={handleChange}
@@ -53,14 +49,14 @@ export default function WalletTabs() {
 
 			</Tabs>
 			<Divider />
-			<div>
+
 			<Asset tablValue={tablValue} index={0}>
 			</Asset>
 			<Transfer tablValue={tablValue} index={1}>
 			</Transfer>
 			<History tablValue={tablValue} index={2}>
 			</History>
-			</div>
+
 
 		</Paper>
 		

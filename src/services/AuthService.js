@@ -15,7 +15,17 @@ const signin = (email, password) => {
     }) 
 }
 
+const signup = async (email, password, passphase) => {
+    try{
+        const res = await axios.post(`/api/v1/account/signup`, {email, password, passphase});
+        return res;
+    } 
+    catch(error) {
+        throw error;
+    }
+    
+}
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-    signin
+    signin, signup
 }
