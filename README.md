@@ -1,4 +1,4 @@
-# wallet backend
+# wallet frontend
 
 Ethereum and erc20 wallet frontend service.
 
@@ -12,6 +12,9 @@ Ethereum and erc20 wallet frontend service.
 
 ## 빌드
 `yarn build`
+
+## demo page(오라클 클라우드)
+http://132.145.91.65:3000/
 
 ## 화면
 #### 1. 로그인
